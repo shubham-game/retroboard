@@ -1,0 +1,659 @@
+{
+  "id": "7d26aa16-c618-4024-a989-acea3a1c8567",
+  "appstackId": "63f8d71a-0186-4e44-9d73-4ee8f1e4494d",
+  "resources": [
+    {
+      "id": "95fac2b2-5adb-4564-8234-97d1ee4c2b6a",
+      "resourceType": "aws_sqs",
+      "iacType": "Terraform",
+      "resourceTypeLabel": "SQS",
+      "position": {
+        "x": 462,
+        "y": 416
+      },
+      "configuration": {
+        "content_based_deduplication": false,
+        "ddl_queue_name": null,
+        "deduplication_scope": "queue",
+        "delay_seconds": 0,
+        "fifo_queue": false,
+        "fifo_throughput_limit": "perQueue",
+        "kms_data_key_reuse_period_seconds": 300,
+        "max_message_size": 262144,
+        "message_retention_seconds": 345600,
+        "name": "",
+        "receive_wait_time_seconds": 0,
+        "redrive_max_receive_count": 4,
+        "redrive_permission": "byQueue",
+        "setup_dead_letter_queue": false,
+        "tags": null,
+        "use_custom_kms_key_for_encryption": true,
+        "visibility_timeout_seconds": 30
+      }
+    },
+    {
+      "id": "7ce8e5d6-3e20-4261-96ba-3246a24793f2",
+      "resourceType": "aws_sns",
+      "iacType": "Terraform",
+      "resourceTypeLabel": "SNS",
+      "position": {
+        "x": 912,
+        "y": 416
+      },
+      "configuration": {
+        "application_failure_feedback_role_arn": null,
+        "application_success_feedback_role_arn": null,
+        "application_success_feedback_sample_rate": null,
+        "content_based_deduplication": null,
+        "delivery_policy": null,
+        "display_name": null,
+        "fifo_topic": null,
+        "firehose_failure_feedback_role_arn": null,
+        "firehose_success_feedback_role_arn": null,
+        "firehose_success_feedback_sample_rate": null,
+        "http_failure_feedback_role_arn": null,
+        "http_success_feedback_role_arn": null,
+        "http_success_feedback_sample_rate": null,
+        "lambda_failure_feedback_role_arn": null,
+        "lambda_success_feedback_role_arn": null,
+        "lambda_success_feedback_sample_rate": null,
+        "signature_version": null,
+        "sqs_failure_feedback_role_arn": null,
+        "sqs_success_feedback_role_arn": null,
+        "sqs_success_feedback_sample_rate": null,
+        "tags": null,
+        "topic_name": null,
+        "topic_policy": "",
+        "tracing_config": null,
+        "use_custom_kms_key_for_encryption": true
+      }
+    },
+    {
+      "id": "f81b90c2-5610-477b-b182-da337e7384f4",
+      "resourceType": "aws_iam_role",
+      "iacType": "Terraform",
+      "label": "api-role",
+      "resourceTypeLabel": "IAM Role",
+      "position": {
+        "x": 1812,
+        "y": 416
+      },
+      "configuration": {
+        "assume_role_policy": "{\n\t\t\"Version\": \"2012-10-17\",\n\t\t\"Statement\":{\n\t\t\t\t\"Action\": \"sts:AssumeRole\",\n\t\t\t\t\"Effect\": \"Allow\",\n\t\t\t\t\"Principal\": {\n\t\t\t\t\t\"Service\": \"lambda.amazonaws.com\"\n\t\t\t\t}\n\t\t\t}\n\t}",
+        "description": null,
+        "force_detach_policies": true,
+        "inline_policy": [],
+        "name": "api-role",
+        "tags": null
+      }
+    },
+    {
+      "id": "31c231bd-a171-4ac1-80f7-73e0d24abda5",
+      "resourceType": "aws_dynamodb",
+      "iacType": "Terraform",
+      "label": "my-table",
+      "resourceTypeLabel": "DynamoDB",
+      "position": {
+        "x": 1362,
+        "y": 416
+      },
+      "configuration": {
+        "attribute": [
+          {
+            "name": "id",
+            "type": "S"
+          }
+        ],
+        "billing_mode": "PROVISIONED",
+        "global_secondary_indexes": [],
+        "hash_key": "id",
+        "local_secondary_indexes": [],
+        "point_in_time_recovery_enabled": true,
+        "range_key": "",
+        "read_capacity": 1,
+        "server_side_encryption_enabled": true,
+        "stream_enabled": false,
+        "stream_view_type": "NEW_IMAGE",
+        "table_name": "my-table",
+        "tags": {},
+        "ttl": [],
+        "write_capacity": 1
+      }
+    },
+    {
+      "id": "44c90917-abd4-4633-813a-1f97c4749524",
+      "resourceType": "aws_lambda",
+      "iacType": "Terraform",
+      "label": "api-function",
+      "resourceTypeLabel": "Lambda Function",
+      "references": [
+        {
+          "key": "role",
+          "label": "Role",
+          "description": "resource aws_iam_role is connected to aws_lambda",
+          "type": "text",
+          "validation": {},
+          "options": {}
+        },
+        {
+          "key": "log_group_name",
+          "label": "Api Cloud Watch Log",
+          "description": "resource aws_cloudwatch_log_group is connected to aws_lambda",
+          "type": "text",
+          "validation": {},
+          "options": {}
+        }
+      ],
+      "position": {
+        "x": 912,
+        "y": 620
+      },
+      "configuration": {
+        "architecture": "x86_64",
+        "authorization_type": "NONE",
+        "collection_name": null,
+        "cors": [],
+        "create_function_url": false,
+        "description": null,
+        "environment_variables": null,
+        "event_source_arn": null,
+        "event_source_mapping": [],
+        "filename": null,
+        "function_name": "api-function",
+        "handler": "main.lambda_handler",
+        "log_format": null,
+        "log_group_name": "${module.appcd_c6250e95-971e-5d10-8274-abce91f8b908.name}",
+        "memory_size": 128,
+        "role": "${module.appcd_bd26a852-abd3-5bab-9143-c6789f51e169.arn}",
+        "runtime": "python3.8",
+        "s3_bucket": null,
+        "s3_key": null,
+        "s3_object_version": null,
+        "system_log_level": null,
+        "tags": null,
+        "timeout": 3
+      }
+    },
+    {
+      "id": "3f091e86-6e3c-4976-9abb-48e2d647ca88",
+      "resourceType": "aws_cloudwatch_log_group",
+      "iacType": "Terraform",
+      "label": "/aws/lambda/api-function",
+      "resourceTypeLabel": "CloudWatch Log Group",
+      "position": {
+        "x": 12,
+        "y": 416
+      },
+      "configuration": {
+        "name": "/aws/lambda/api-function",
+        "retention_in_days": 7,
+        "tags": {}
+      }
+    },
+    {
+      "id": "7032fade-a788-42c6-8820-66b8ac554ecb",
+      "resourceType": "aws_lambda",
+      "iacType": "Terraform",
+      "label": "send-email-function",
+      "resourceTypeLabel": "Lambda Function",
+      "references": [
+        {
+          "key": "role",
+          "label": "Role",
+          "description": "resource aws_iam_role is connected to aws_lambda",
+          "type": "text",
+          "validation": {},
+          "options": {}
+        },
+        {
+          "key": "log_group_name",
+          "label": "Send-Email Cloud Watch Log",
+          "description": "resource aws_cloudwatch_log_group is connected to aws_lambda",
+          "type": "text",
+          "validation": {},
+          "options": {}
+        }
+      ],
+      "position": {
+        "x": 412,
+        "y": 180
+      },
+      "configuration": {
+        "architecture": "x86_64",
+        "authorization_type": "NONE",
+        "collection_name": null,
+        "cors": [],
+        "create_function_url": false,
+        "description": null,
+        "environment_variables": null,
+        "event_source_arn": null,
+        "event_source_mapping": [],
+        "filename": null,
+        "function_name": "send-email-function",
+        "handler": "main.lambda_handler",
+        "log_format": null,
+        "log_group_name": "${module.appcd_a957e438-15ef-54a4-a2f1-b37edb476a87.name}",
+        "memory_size": 128,
+        "role": "${module.appcd_2a2183a7-1765-589b-8ffe-ca32b33f8aa2.arn}",
+        "runtime": "python3.8",
+        "s3_bucket": null,
+        "s3_key": null,
+        "s3_object_version": null,
+        "system_log_level": null,
+        "tags": null,
+        "timeout": 3
+      }
+    },
+    {
+      "id": "a099afd6-9632-4986-8f74-d4d301ef7e3d",
+      "resourceType": "aws_iam_role",
+      "iacType": "Terraform",
+      "label": "send-email-role",
+      "resourceTypeLabel": "IAM Role",
+      "position": {
+        "x": 462,
+        "y": 12
+      },
+      "configuration": {
+        "assume_role_policy": "{\n\t\t\"Version\": \"2012-10-17\",\n\t\t\"Statement\":{\n\t\t\t\t\"Action\": \"sts:AssumeRole\",\n\t\t\t\t\"Effect\": \"Allow\",\n\t\t\t\t\"Principal\": {\n\t\t\t\t\t\"Service\": \"lambda.amazonaws.com\"\n\t\t\t\t}\n\t\t\t}\n\t}",
+        "description": null,
+        "force_detach_policies": true,
+        "inline_policy": [],
+        "name": "send-email-role",
+        "tags": null
+      }
+    },
+    {
+      "id": "a1856613-8ee5-4444-9fe2-2b13457cb405",
+      "resourceType": "aws_cloudwatch_log_group",
+      "iacType": "Terraform",
+      "label": "/aws/lambda/send-email-function",
+      "resourceTypeLabel": "CloudWatch Log Group",
+      "position": {
+        "x": 12,
+        "y": 12
+      },
+      "configuration": {
+        "name": "/aws/lambda/send-email-function",
+        "retention_in_days": 7,
+        "tags": {}
+      }
+    },
+    {
+      "id": "8de46b4e-00d5-45df-811b-8b43cba80eb9",
+      "resourceType": "aws_sns",
+      "iacType": "Terraform",
+      "resourceTypeLabel": "SNS",
+      "position": {
+        "x": 997,
+        "y": 306
+      },
+      "configuration": {
+        "application_failure_feedback_role_arn": null,
+        "application_success_feedback_role_arn": null,
+        "application_success_feedback_sample_rate": null,
+        "content_based_deduplication": null,
+        "delivery_policy": null,
+        "display_name": null,
+        "fifo_topic": null,
+        "firehose_failure_feedback_role_arn": null,
+        "firehose_success_feedback_role_arn": null,
+        "firehose_success_feedback_sample_rate": null,
+        "http_failure_feedback_role_arn": null,
+        "http_success_feedback_role_arn": null,
+        "http_success_feedback_sample_rate": null,
+        "lambda_failure_feedback_role_arn": null,
+        "lambda_success_feedback_role_arn": null,
+        "lambda_success_feedback_sample_rate": null,
+        "signature_version": null,
+        "sqs_failure_feedback_role_arn": null,
+        "sqs_success_feedback_role_arn": null,
+        "sqs_success_feedback_sample_rate": null,
+        "tags": null,
+        "topic_name": null,
+        "topic_policy": "",
+        "tracing_config": null,
+        "use_custom_kms_key_for_encryption": true
+      }
+    },
+    {
+      "id": "74a3c585-db22-4a38-a1a1-93d2afd53538",
+      "resourceType": "aws_lambda",
+      "iacType": "Terraform",
+      "label": "send-slack-alert-function",
+      "resourceTypeLabel": "Lambda Function",
+      "references": [
+        {
+          "key": "role",
+          "label": "Role",
+          "description": "resource aws_iam_role is connected to aws_lambda",
+          "type": "text",
+          "validation": {},
+          "options": {}
+        },
+        {
+          "key": "log_group_name",
+          "label": "Send-Slack-Alert Cloud Watch Log",
+          "description": "resource aws_cloudwatch_log_group is connected to aws_lambda",
+          "type": "text",
+          "validation": {},
+          "options": {}
+        }
+      ],
+      "position": {
+        "x": 997,
+        "y": 166
+      },
+      "configuration": {
+        "architecture": "x86_64",
+        "authorization_type": "NONE",
+        "collection_name": null,
+        "cors": [],
+        "create_function_url": false,
+        "description": null,
+        "environment_variables": null,
+        "event_source_arn": null,
+        "event_source_mapping": [],
+        "filename": null,
+        "function_name": "send-slack-alert-function",
+        "handler": "main.lambda_handler",
+        "log_format": null,
+        "log_group_name": "${module.appcd_c0c732c9-15af-57c2-9de7-fc067dd7a921.name}",
+        "memory_size": 128,
+        "role": "${module.appcd_422f5f4a-6435-576e-ba43-8ed8da67c2da.arn}",
+        "runtime": "python3.8",
+        "s3_bucket": null,
+        "s3_key": null,
+        "s3_object_version": null,
+        "system_log_level": null,
+        "tags": null,
+        "timeout": 3
+      }
+    },
+    {
+      "id": "56f72821-dee7-4314-b035-025dd3607df1",
+      "resourceType": "aws_iam_role",
+      "iacType": "Terraform",
+      "label": "send-slack-alert-role",
+      "resourceTypeLabel": "IAM Role",
+      "position": {
+        "x": 1232,
+        "y": 12
+      },
+      "configuration": {
+        "assume_role_policy": "{\n\t\t\"Version\": \"2012-10-17\",\n\t\t\"Statement\":{\n\t\t\t\t\"Action\": \"sts:AssumeRole\",\n\t\t\t\t\"Effect\": \"Allow\",\n\t\t\t\t\"Principal\": {\n\t\t\t\t\t\"Service\": \"lambda.amazonaws.com\"\n\t\t\t\t}\n\t\t\t}\n\t}",
+        "description": null,
+        "force_detach_policies": true,
+        "inline_policy": [],
+        "name": "send-slack-alert-role",
+        "tags": null
+      }
+    },
+    {
+      "id": "fd479dbc-3b64-4751-a669-07cd2de41e3e",
+      "resourceType": "aws_cloudwatch_log_group",
+      "iacType": "Terraform",
+      "label": "/aws/lambda/send-slack-alert-function",
+      "resourceTypeLabel": "CloudWatch Log Group",
+      "position": {
+        "x": 782,
+        "y": 12
+      },
+      "configuration": {
+        "name": "/aws/lambda/send-slack-alert-function",
+        "retention_in_days": 7,
+        "tags": {}
+      }
+    }
+  ],
+  "resourceConnections": [
+    {
+      "id": "d681060c-ddd5-4782-8ba1-eb74982e9b52",
+      "sourceResourceId": "95fac2b2-5adb-4564-8234-97d1ee4c2b6a",
+      "targetResourceId": "44c90917-abd4-4633-813a-1f97c4749524",
+      "data": {
+        "_configuration": {
+          "name": "aws_sqs-api-policy",
+          "policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"AllowKmsAccess\",\n      \"Action\": [\n        \"kms:Decrypt\",\n        \"kms:Encrypt\",\n        \"kms:GenerateDataKey\"\n      ],\n      \"Effect\": \"Allow\",\n      \"Resource\": [\n        \"*\"\n      ]\n    },\n    {\n      \"Sid\": \"apiSQS6d67a292684550bdb1663ddf40c9b1d7\",\n      \"Action\": [\n        \"sqs:SendMessage\"\n      ],\n      \"Effect\": \"Allow\",\n      \"Resource\": [\n        \"${module.appcd_6d67a292-6845-50bd-b166-3ddf40c9b1d7.arn}\"\n      ]\n    }\n  ]\n}",
+          "role": "${module.appcd_bd26a852-abd3-5bab-9143-c6789f51e169.name}",
+          "role_type": "Custom"
+        },
+        "connectionType": "IAM",
+        "iacType": "Terraform",
+        "resourceType": "aws_iam_role_policy",
+        "references": [
+          {
+            "key": "role",
+            "label": "Role",
+            "description": "role is being referred from iam_role resource",
+            "type": "text",
+            "validation": {},
+            "options": {}
+          }
+        ],
+        "overrideAttributes": {
+          "role_type": {
+            "validation": {
+              "required": true,
+              "dataType": "string"
+            },
+            "options": {
+              "items": [
+                {
+                  "value": "Custom",
+                  "label": "Custom",
+                  "description": "user defined policy to apply multiple types of permission",
+                  "dependentAttributes": [
+                    {
+                      "key": "policy",
+                      "type": "json",
+                      "label": "Policy",
+                      "linkAttributes": {
+                        "action": {}
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "fallbackValue": "Custom",
+            "dependentAttributes": true
+          }
+        }
+      }
+    },
+    {
+      "id": "7b4b10a9-05b6-47a6-8aa4-c991a6145373",
+      "sourceResourceId": "7ce8e5d6-3e20-4261-96ba-3246a24793f2",
+      "targetResourceId": "44c90917-abd4-4633-813a-1f97c4749524",
+      "data": {
+        "_configuration": {
+          "name": "aws_sns-api-policy",
+          "policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"AllowKmsAccess\",\n      \"Action\": [\n        \"kms:Decrypt\",\n        \"kms:Encrypt\",\n        \"kms:GenerateDataKey\"\n      ],\n      \"Effect\": \"Allow\",\n      \"Resource\": [\n        \"*\"\n      ]\n    },\n    {\n      \"Sid\": \"apiSNS22f36cfa89df551aa7e9efc9e051cd01\",\n      \"Action\": [\n        \"sns:Publish\"\n      ],\n      \"Effect\": \"Allow\",\n      \"Resource\": [\n        \"${module.appcd_22f36cfa-89df-551a-a7e9-efc9e051cd01.arn}\"\n      ]\n    }\n  ]\n}",
+          "role": "${module.appcd_bd26a852-abd3-5bab-9143-c6789f51e169.name}",
+          "role_type": "Custom"
+        },
+        "connectionType": "IAM",
+        "iacType": "Terraform",
+        "resourceType": "aws_iam_role_policy",
+        "references": [
+          {
+            "key": "role",
+            "label": "Role",
+            "description": "role is being referred from iam_role resource",
+            "type": "text",
+            "validation": {},
+            "options": {}
+          }
+        ],
+        "overrideAttributes": {
+          "role_type": {
+            "validation": {
+              "required": true,
+              "dataType": "string"
+            },
+            "options": {
+              "items": [
+                {
+                  "value": "Custom",
+                  "label": "Custom",
+                  "description": "user defined policy to apply multiple types of permission",
+                  "dependentAttributes": [
+                    {
+                      "key": "policy",
+                      "type": "json",
+                      "label": "Policy",
+                      "linkAttributes": {
+                        "action": {}
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "fallbackValue": "Custom",
+            "dependentAttributes": true
+          }
+        }
+      }
+    },
+    {
+      "id": "818a80eb-c617-425e-9f95-13b3e576903d",
+      "sourceResourceId": "31c231bd-a171-4ac1-80f7-73e0d24abda5",
+      "targetResourceId": "44c90917-abd4-4633-813a-1f97c4749524",
+      "data": {
+        "_configuration": {
+          "name": "Reader",
+          "policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"DynamoDBe7fea63fa08052bfb1ca0b5a20b331b9\",\n      \"Action\": [\n        \"dynamodb:DescribeTable\",\n        \"dynamodb:ListTables\",\n        \"dynamodb:GetItem\",\n        \"dynamodb:BatchGetItem\",\n        \"dynamodb:Query\",\n        \"dynamodb:Scan\"\n      ],\n      \"Effect\": \"Allow\",\n      \"Resource\": [\n        \"${module.appcd_e7fea63f-a080-52bf-b1ca-0b5a20b331b9.arn}\",\n        \"${module.appcd_e7fea63f-a080-52bf-b1ca-0b5a20b331b9.arn}/*\"\n      ]\n    }\n  ]\n}",
+          "role": "${module.appcd_bd26a852-abd3-5bab-9143-c6789f51e169.name}",
+          "role_type": "Reader"
+        },
+        "connectionType": "IAM",
+        "iacType": "Terraform",
+        "resourceType": "aws_iam_role_policy",
+        "references": [
+          {
+            "key": "role",
+            "label": "Role",
+            "description": "role is being referred from iam_role resource",
+            "type": "text",
+            "validation": {},
+            "options": {}
+          }
+        ],
+        "overrideAttributes": {
+          "role_type": {
+            "validation": {
+              "required": true,
+              "dataType": "string"
+            },
+            "options": {
+              "items": [
+                {
+                  "value": "Custom",
+                  "label": "Custom",
+                  "description": "user defined policy to apply multiple types of permission",
+                  "dependentAttributes": [
+                    {
+                      "key": "policy",
+                      "type": "json",
+                      "label": "Policy",
+                      "linkAttributes": {
+                        "action": {}
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "fallbackValue": "Custom",
+            "dependentAttributes": true
+          }
+        }
+      }
+    },
+    {
+      "id": "22138b50-378e-4951-af24-72cfbdb2500c",
+      "sourceResourceId": "f81b90c2-5610-477b-b182-da337e7384f4",
+      "targetResourceId": "44c90917-abd4-4633-813a-1f97c4749524",
+      "data": {
+        "connectionType": "DATA"
+      }
+    },
+    {
+      "id": "b9e50383-9692-4fa4-84c7-3c4c0a5a7d24",
+      "sourceResourceId": "3f091e86-6e3c-4976-9abb-48e2d647ca88",
+      "targetResourceId": "44c90917-abd4-4633-813a-1f97c4749524",
+      "data": {
+        "connectionType": "DATA"
+      }
+    },
+    {
+      "id": "688683c6-0aa4-401e-94a6-5372a289629b",
+      "sourceResourceId": "a099afd6-9632-4986-8f74-d4d301ef7e3d",
+      "targetResourceId": "7032fade-a788-42c6-8820-66b8ac554ecb",
+      "data": {
+        "connectionType": "DATA"
+      }
+    },
+    {
+      "id": "b608c3b5-3ab1-4751-a3ce-48adbaadd01b",
+      "sourceResourceId": "a1856613-8ee5-4444-9fe2-2b13457cb405",
+      "targetResourceId": "7032fade-a788-42c6-8820-66b8ac554ecb",
+      "data": {
+        "connectionType": "DATA"
+      }
+    },
+    {
+      "id": "651582da-500b-48f4-9051-0f06fbc2b537",
+      "sourceResourceId": "56f72821-dee7-4314-b035-025dd3607df1",
+      "targetResourceId": "74a3c585-db22-4a38-a1a1-93d2afd53538",
+      "data": {
+        "connectionType": "DATA"
+      }
+    },
+    {
+      "id": "d641e72d-4306-46dc-91a0-def25b190b16",
+      "sourceResourceId": "74a3c585-db22-4a38-a1a1-93d2afd53538",
+      "targetResourceId": "8de46b4e-00d5-45df-811b-8b43cba80eb9",
+      "data": {
+        "_configuration": {
+          "lambda_function_arn": "${module.appcd_4b4bc922-3a79-557a-873a-3205d1bebe39.function_arn}",
+          "topic_arn": "${module.appcd_35eb45e7-0d0c-5c6e-b451-79ea31bc461e.arn}"
+        },
+        "connectionType": "TRIGGER",
+        "iacType": "Terraform",
+        "resourceType": "aws_sns_lambda_event_source_mapping",
+        "resourceTypeLabel": "SNS Lambda Trigger",
+        "references": [
+          {
+            "key": "lambda_function_arn",
+            "label": "Lambda Function ARN",
+            "description": "resource aws_lambda is connected to aws_sns_lambda_event_source_mapping",
+            "type": "text",
+            "validation": {},
+            "options": {}
+          },
+          {
+            "key": "topic_arn",
+            "label": "Topic ARN",
+            "description": "resource aws_sns is connected to aws_sns_lambda_event_source_mapping",
+            "type": "text",
+            "validation": {},
+            "options": {}
+          }
+        ]
+      }
+    },
+    {
+      "id": "14f3712f-7be4-4991-8f8e-96fe9773d3eb",
+      "sourceResourceId": "fd479dbc-3b64-4751-a669-07cd2de41e3e",
+      "targetResourceId": "74a3c585-db22-4a38-a1a1-93d2afd53538",
+      "data": {
+        "connectionType": "DATA"
+      }
+    }
+  ],
+  "cloudProvider": "aws",
+  "deploymentType": "aws-lambda"
+}
